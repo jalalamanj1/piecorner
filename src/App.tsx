@@ -4,6 +4,7 @@ import { Offers } from './components/Offers';
 import { MenuSection } from './components/MenuSection';
 import { FloatingButtons } from './components/FloatingButtons';
 import { ConfigDrawer } from './components/ConfigDrawer';
+import { Header } from './components/Header';
 
 import { config as defaultConfig, initialMenuData, sampleMenuData } from './config';
 import { RestaurantConfig, MenuData } from './types';
@@ -85,7 +86,10 @@ export default function App() {
 
       {/* Main Container - Mobile Centered Architecture */}
       <div className="w-full max-w-lg mx-auto relative z-10 space-y-2">
-        
+
+        {/* HEADER */}
+        <Header config={config} />
+
         {/* MOST REQUESTED ⭐ */}
         <Featured
           featuredItems={menuData.featured || []}
