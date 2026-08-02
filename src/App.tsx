@@ -17,7 +17,7 @@ export default function App() {
   // Central Menu Data - populated with the restaurant's menu
   const [menuData, setMenuData] = useState<MenuData>(sampleMenuData);
 
-  // Simple path-based routing
+  // Simple path-based routing (works on root or a subpath like /piecorner/)
   const [pathname, setPathname] = useState(window.location.pathname);
 
   // Currently open accordion section (one at a time: 'featured' or a category id)
@@ -27,6 +27,9 @@ export default function App() {
     setOpenSection((prev) => (prev === id ? null : id));
   };
 
+  const isAdminPage = pathname === ADMIN_PATH || pathname.endsWith(ADMIN_PATH);
+  const sitePrefix = isAdminPage ? pathname.slice(0, pathname.indexOf(ADMIN_PATH)) : '';
+
   useEffect(() => {
     const onLocationChange = () => setPathname(window.location.pathname);
     window.addEventListener('popstate', onLocationChange);
@@ -34,8 +37,9 @@ export default function App() {
   }, []);
 
   const navigate = (path: string) => {
-    window.history.pushState({}, '', path);
-    setPathname(path);
+    const target = sitePrefix + path;
+    window.history.pushState({}, '', target);
+    setPathname(target);
     window.scrollTo({ top: 0 });
   };
 
@@ -56,7 +60,7 @@ export default function App() {
     setMenuData(initialMenuData);
   };
 
-  if (pathname === ADMIN_PATH) {
+  if (isAdminPage) {
     return (
       <ConfigDrawer
         isOpen
