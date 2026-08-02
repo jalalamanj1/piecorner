@@ -1,0 +1,6 @@
+{
+  "name": "Pie Corner",
+  "description": "مطعم باي كورنر - بيتزا وفطائر فاخرة بتصميم جلاس مورفيزم متطور",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
