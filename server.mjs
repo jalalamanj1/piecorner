@@ -7,7 +7,7 @@
 import express from 'express';
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
-import { join, normalize, resolve, sep } from 'node:path';
+import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const app = express();
@@ -28,15 +28,16 @@ function runGit(args) {
   return execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] });
 }
 
+// Accepts a relative URL like "images/p1.jpg" and maps it to public/images/p1.jpg.
 function safeImagePath(p) {
-  const base = join(IMAGE_DIR);
-  const target = normalize(join(base, p));
-  if (!target.startsWith(base + sep) && target !== base) {
-    throw new Error('image path is not inside public/images');
+  if (typeof p !== 'string') throw new Error('invalid image path');
+  const match = p.match(/^images\/([A-Za-z0-9_\-.]+)$/);
+  if (!match) throw new Error('invalid image path (expected images/<file>)');
+  const filename = match[1];
+  if (!/^[A-Za-z0-9_\-]+\.(jpe?g|png|webp|gif)$/i.test(filename)) {
+    throw new Error('invalid image filename');
   }
-  const rel = target.slice(base.length + 1).split(sep).join('/');
-  if (!/^[A-Za-z0-9_\-.]+$/.test(rel)) throw new Error('invalid image filename');
-  return rel;
+  return filename;
 }
 
 app.get('/api/health', (req, res) => {
@@ -81,10 +82,10 @@ app.post('/api/save', (req, res) => {
 
     for (const img of images || []) {
       if (!img || typeof img.path !== 'string' || typeof img.base64 !== 'string') continue;
-      const rel = safeImagePath(img.path);
+      const filename = safeImagePath(img.path);
       const buf = Buffer.from(img.base64, 'base64');
-      writeFileSync(join(IMAGE_DIR, rel), buf);
-      filesChanged.push(`public/images/${rel}`);
+      writeFileSync(join(IMAGE_DIR, filename), buf);
+      filesChanged.push(`public/images/${filename}`);
     }
   } catch (err) {
     return res.status(500).json({ ok: false, error: String(err.message || err) });
