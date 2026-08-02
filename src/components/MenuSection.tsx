@@ -15,6 +15,7 @@ import {
   Milk
 } from 'lucide-react';
 import { getItemEmoji } from '../utils/foodEmoji';
+import { resolveImageUrl } from '../utils/image';
 
 interface MenuSectionProps {
   menuData: MenuData;
@@ -108,7 +109,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
                         <div className="relative h-24 w-full overflow-hidden bg-black/40 border-b border-white/10">
                           {item.image ? (
                             <img
-                              src={item.image}
+                              src={resolveImageUrl(item.image)}
                               alt={item.nameAr}
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                             />

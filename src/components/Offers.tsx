@@ -1,6 +1,7 @@
 import React from 'react';
 import { BadgePercent, CheckCircle2, ChevronDown } from 'lucide-react';
 import { offers } from '../config';
+import { resolveImageUrl } from '../utils/image';
 
 interface OffersProps {
   isOpen: boolean;
@@ -47,7 +48,7 @@ export const Offers: React.FC<OffersProps> = ({ isOpen, onToggle }) => {
                 <div className={`relative h-24 w-full overflow-hidden bg-gradient-to-br ${offer.accent} bg-opacity-20 border-b border-white/10 flex items-center justify-center`}>
                   {offer.image ? (
                     <img
-                      src={offer.image}
+                      src={resolveImageUrl(offer.image)}
                       alt={offer.titleAr}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />

@@ -2,6 +2,7 @@ import React from 'react';
 import { MenuItem } from '../types';
 import { Flame, ChevronDown } from 'lucide-react';
 import { getItemEmoji } from '../utils/foodEmoji';
+import { resolveImageUrl } from '../utils/image';
 
 interface FeaturedProps {
   featuredItems: MenuItem[];
@@ -59,7 +60,7 @@ export const Featured: React.FC<FeaturedProps> = ({
                   <div className="relative h-28 w-full rounded-xl overflow-hidden mb-2.5 bg-black/40 border border-white/10">
                     {item.image ? (
                       <img
-                        src={item.image}
+                        src={resolveImageUrl(item.image)}
                         alt={item.nameAr}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
