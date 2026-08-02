@@ -23,9 +23,11 @@ export const Header: React.FC<HeaderProps> = ({ config }) => {
             <h1 className="text-lg font-black text-white leading-tight flex items-center gap-1">
               <span>{config.restaurantName}</span>
             </h1>
-            <p className="text-[10px] text-[#FFE8CC]/70 font-medium leading-none">
-              {config.slogan}
-            </p>
+            {config.slogan && (
+              <p className="text-[10px] text-[#FFE8CC]/70 font-medium leading-none">
+                {config.slogan}
+              </p>
+            )}
           </div>
         </div>
       </div>
