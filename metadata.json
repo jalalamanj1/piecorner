@@ -1,0 +1,6 @@
+{
+  "name": "Digital Menu",
+  "description": "A modern, minimalist mobile-first digital restaurant menu with hero carousel, category tabs, and special offers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
