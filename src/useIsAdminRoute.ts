@@ -3,7 +3,12 @@ import { useEffect, useState } from 'react';
 export const ADMIN_ROUTE = '/piecornerdashboard';
 
 export function isAdminRoute(path: string = window.location.pathname): boolean {
-  return path.startsWith(ADMIN_ROUTE);
+  const base = import.meta.env.BASE_URL;
+  let p = path;
+  if (base && base !== '/' && p.startsWith(base)) {
+    p = p.slice(base.length - 1);
+  }
+  return p.startsWith(ADMIN_ROUTE);
 }
 
 export function useIsAdminRoute(): boolean {

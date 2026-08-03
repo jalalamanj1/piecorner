@@ -21,6 +21,7 @@ import { saveMenuDataToFiles } from '../data/fileStore';
 import { DIETARY_TAG_LABELS } from '../data/restaurantData';
 import { Category, DietaryTag, HeroSlide, LocalizedText, MenuItem, RestaurantConfig } from '../types';
 import { ADMIN_ROUTE } from '../useIsAdminRoute';
+import { assetUrl } from '../lib/assetUrl';
 import { ImageInput } from './ImageInput';
 
 type Tab = 'general' | 'items' | 'categories' | 'slides';
@@ -622,7 +623,7 @@ export const AdminDashboard: React.FC = () => {
                   <div key={item.id} className="flex items-center gap-3 bg-[#FAFAF8] rounded-2xl border border-[#ECECEC] p-2.5">
                     <div className="w-12 h-12 rounded-xl overflow-hidden bg-white border border-[#ECECEC] shrink-0">
                       {item.image ? (
-                        <img src={item.image} alt={item.name.ar} className="w-full h-full object-cover" onError={(e) => ((e.target as HTMLImageElement).style.display = 'none')} />
+                        <img src={assetUrl(item.image)} alt={item.name.ar} className="w-full h-full object-cover" loading="lazy" decoding="async" onError={(e) => ((e.target as HTMLImageElement).style.display = 'none')} />
                       ) : null}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -735,7 +736,7 @@ export const AdminDashboard: React.FC = () => {
           )}
           <div className="flex items-center gap-2">
             <a
-              href={ADMIN_ROUTE}
+              href={`${import.meta.env.BASE_URL}${ADMIN_ROUTE.slice(1)}`}
               className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#FAFAF8] border border-[#ECECEC] text-[#777777] hover:text-[#222222] text-xs font-semibold transition-all cursor-pointer"
             >
               <ExternalLink className="w-3.5 h-3.5" />

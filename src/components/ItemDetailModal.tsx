@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Flame, Sparkles, ChefHat, Info } from 'lucide-react';
 import { MenuItem } from '../types';
 import { DIETARY_TAG_LABELS } from '../data/restaurantData';
 import { useLanguage } from '../i18n';
+import { ResponsiveImage } from './ResponsiveImage';
 
 interface ItemDetailModalProps {
   item: MenuItem | null;
@@ -11,7 +12,7 @@ interface ItemDetailModalProps {
   onClose: () => void;
 }
 
-export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
+export const ItemDetailModal: React.FC<ItemDetailModalProps> = memo(({
   item,
   currencySymbol,
   onClose,
@@ -25,8 +26,7 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
   return (
     <AnimatePresence>
       {item && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/40 backdrop-blur-xs">
-          {/* Backdrop Click */}
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/40 backdrop-blur-xs">          {/* Backdrop Click */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -46,7 +46,7 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
             {/* Close Button Floating */}
             <button
               onClick={onClose}
-              className="absolute top-4 left-4 z-20 w-9 h-9 rounded-full bg-white/80 backdrop-blur-md border border-[#ECECEC] flex items-center justify-center text-[#222222] shadow-sm hover:bg-white cursor-pointer active:scale-95 transition-all"
+              className="absolute top-4 left-4 z-20 w-9 h-9 rounded-full bg-white/80 backdrop-blur-[6px] border border-[#ECECEC] flex items-center justify-center text-[#222222] shadow-sm hover:bg-white cursor-pointer active:scale-95 transition-all"
               aria-label={t('close')}
             >
               <X className="w-5 h-5" />
@@ -55,9 +55,12 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
             {/* Top Large Hero Image */}
             <div className="relative w-full h-60 sm:h-64 bg-[#FAFAF8] shrink-0">
               {item.image ? (
-                <img
+                <ResponsiveImage
                   src={item.image}
                   alt={item.name[lang]}
+                  priority
+                  width={640}
+                  height={256}
                   className="w-full h-full object-cover"
                 />
               ) : (
@@ -77,7 +80,7 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
                 {item.dietaryTags?.map((tag) => (
                   <span
                     key={tag}
-                    className="text-xs font-semibold px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-[#222222] shadow-xs"
+                    className="text-xs font-semibold px-3 py-1 rounded-full bg-white/90 backdrop-blur-[6px] text-[#222222] shadow-xs"
                   >
                     {DIETARY_TAG_LABELS[tag][lang]}
                   </span>
@@ -171,4 +174,4 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
       )}
     </AnimatePresence>
   );
-};
+});

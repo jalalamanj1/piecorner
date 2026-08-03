@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MapPin, Clock, Phone, X, Navigation, ExternalLink } from 'lucide-react';
 import { RestaurantConfig } from '../types';
@@ -10,14 +10,14 @@ interface LocationModalProps {
   onClose: () => void;
 }
 
-export const LocationModal: React.FC<LocationModalProps> = ({ isOpen, config, onClose }) => {
+export const LocationModal: React.FC<LocationModalProps> = memo(({ isOpen, config, onClose }) => {
   const { lang, t } = useLanguage();
 
   if (!isOpen) return null;
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-[4px]">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -54,7 +54,7 @@ export const LocationModal: React.FC<LocationModalProps> = ({ isOpen, config, on
             <div className="w-10 h-10 rounded-full bg-[#4CAF50] text-white flex items-center justify-center shadow-lg animate-bounce z-10">
               <MapPin className="w-5 h-5" />
             </div>
-            <span className="text-xs font-bold text-[#222222] z-10 mt-2 bg-white/90 backdrop-blur-xs px-2.5 py-0.5 rounded-full border border-[#ECECEC]">
+            <span className="text-xs font-bold text-[#222222] z-10 mt-2 bg-white/90 backdrop-blur-[4px] px-2.5 py-0.5 rounded-full border border-[#ECECEC]">
               {config.name[lang]}
             </span>
           </div>
@@ -94,7 +94,7 @@ export const LocationModal: React.FC<LocationModalProps> = ({ isOpen, config, on
       </div>
     </AnimatePresence>
   );
-};
+});
 
 interface CallModalProps {
   isOpen: boolean;
@@ -102,14 +102,14 @@ interface CallModalProps {
   onClose: () => void;
 }
 
-export const CallModal: React.FC<CallModalProps> = ({ isOpen, config, onClose }) => {
+export const CallModal: React.FC<CallModalProps> = memo(({ isOpen, config, onClose }) => {
   const { t } = useLanguage();
 
   if (!isOpen) return null;
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-[4px]">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -160,4 +160,4 @@ export const CallModal: React.FC<CallModalProps> = ({ isOpen, config, onClose })
       </div>
     </AnimatePresence>
   );
-};
+});

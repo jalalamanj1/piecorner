@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { ImagePlus, Upload, X } from 'lucide-react';
+import { assetUrl } from '../lib/assetUrl';
 
 interface ImageInputProps {
   label: string;
@@ -9,8 +10,8 @@ interface ImageInputProps {
 
 // Optimization limits: anything above these gets downscaled/re-encoded so the
 // saved data stays small (well under the localStorage quota).
-const MAX_DIM = 1400;
-const QUALITY = 0.82;
+const MAX_DIM = 1000;
+const QUALITY = 0.8;
 const KEEP_BELOW_BYTES = 350 * 1024;
 
 function fileToDataUrl(file: File): Promise<string> {
@@ -89,7 +90,7 @@ export const ImageInput: React.FC<ImageInputProps> = ({ label, value, onChange }
       <label className="text-[11px] font-bold text-[#222222] block mb-1">{label}</label>
       {value ? (
         <div className="relative w-28 h-28 rounded-2xl overflow-hidden border border-[#ECECEC] bg-[#FAFAF8]">
-          <img src={value} alt="معاينة الصورة" className="w-full h-full object-cover" />
+          <img src={assetUrl(value)} alt="معاينة الصورة" className="w-full h-full object-cover" loading="lazy" decoding="async" />
           <button
             type="button"
             onClick={() => onChange('')}

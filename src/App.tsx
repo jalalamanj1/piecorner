@@ -1,17 +1,29 @@
-import { useMemo, useState } from 'react';
+import { Suspense, lazy, useCallback, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Header } from './components/Header';
 import { HeroCarousel } from './components/HeroCarousel';
 import { CategoryTabs } from './components/CategoryTabs';
 import { MenuSection } from './components/MenuSection';
-import { ItemDetailModal } from './components/ItemDetailModal';
-import { LocationModal, CallModal } from './components/InfoModals';
-import { AdminDashboard } from './admin/AdminDashboard';
 import { MenuData, useMenuData } from './data/menuStore';
-import { defaultRestaurantConfig } from './data/restaurantData';
 import { useIsAdminRoute } from './useIsAdminRoute';
 import { LanguageProvider, useLanguage } from './i18n';
-import { MenuItem, RestaurantConfig } from './types';
+import { MenuItem } from './types';
+
+// Code-split the admin panel and the modals so they never load on the public page.
+const AdminDashboard = lazy(() =>
+  import('./admin/AdminDashboard').then((m) => ({ default: m.AdminDashboard }))
+);
+const ItemDetailModal = lazy(() =>
+  import('./components/ItemDetailModal').then((m) => ({ default: m.ItemDetailModal }))
+);
+const LocationModal = lazy(() =>
+  import('./components/InfoModals').then((m) => ({ default: m.LocationModal }))
+);
+const CallModal = lazy(() =>
+  import('./components/InfoModals').then((m) => ({ default: m.CallModal }))
+);
+
+const MODAL_FALLBACK = null;
 
 export default function App() {
   return (
@@ -26,7 +38,17 @@ function Root() {
   const isAdmin = useIsAdminRoute();
 
   if (isAdmin) {
-    return <AdminDashboard />;
+    return (
+      <Suspense
+        fallback={
+          <div className="min-h-screen bg-[#F5F5F2] flex items-center justify-center">
+            <p className="text-xs text-[#777777] font-semibold">جارٍ التحميل...</p>
+          </div>
+        }
+      >
+        <AdminDashboard />
+      </Suspense>
+    );
   }
 
   return <PublicMenu data={data} update={update} />;
@@ -56,14 +78,14 @@ function PublicMenu({ data, update }: PublicMenuProps) {
     return menuItems.filter((item) => item.categoryId === activeCategoryId);
   }, [activeCategoryId, menuItems]);
 
-  // Handle configuration updates
-  const handleUpdateConfig = (newConfig: Partial<RestaurantConfig>) => {
-    update({ ...data, config: { ...config, ...newConfig } });
-  };
+  const handleSelectCategory = useCallback((catId: string) => setActiveCategoryId(catId), []);
 
-  const handleResetDefault = () => {
-    update({ ...data, config: { ...defaultRestaurantConfig } });
-  };
+  const handleOpenLocation = useCallback(() => setIsLocationOpen(true), []);
+  const handleCloseLocation = useCallback(() => setIsLocationOpen(false), []);
+  const handleOpenCall = useCallback(() => setIsCallOpen(true), []);
+  const handleCloseCall = useCallback(() => setIsCallOpen(false), []);
+  const handleSelectItem = useCallback((item: MenuItem) => setSelectedItem(item), []);
+  const handleCloseItem = useCallback(() => setSelectedItem(null), []);
 
   return (
     <div className="min-h-screen bg-[#FAFAF8] text-[#222222] font-sans antialiased selection:bg-[#4CAF50]/20 selection:text-[#222222]">
@@ -82,8 +104,8 @@ function PublicMenu({ data, update }: PublicMenuProps) {
             {/* 1. Sticky Header */}
             <Header
               config={config}
-              onOpenLocation={() => setIsLocationOpen(true)}
-              onOpenCall={() => setIsCallOpen(true)}
+              onOpenLocation={handleOpenLocation}
+              onOpenCall={handleOpenCall}
             />
 
             {/* Main Content Area */}
@@ -91,14 +113,14 @@ function PublicMenu({ data, update }: PublicMenuProps) {
               {/* 2. Hero Banner (Image Carousel) */}
               <HeroCarousel
                 slides={heroSlides}
-                onSelectCategory={(catId) => setActiveCategoryId(catId)}
+                onSelectCategory={handleSelectCategory}
               />
 
               {/* 3. Horizontal Category Tabs */}
               <CategoryTabs
                 categories={categories}
                 activeCategoryId={activeCategoryId}
-                onSelectCategory={(catId) => setActiveCategoryId(catId)}
+                onSelectCategory={handleSelectCategory}
               />
 
               {/* 4. Dynamic Menu Section */}
@@ -106,7 +128,7 @@ function PublicMenu({ data, update }: PublicMenuProps) {
                 activeCategory={activeCategory}
                 items={currentMenuItems}
                 currencySymbol={config.currencySymbol}
-                onSelectItem={(item) => setSelectedItem(item)}
+                onSelectItem={handleSelectItem}
               />
             </main>
           </motion.div>
@@ -114,25 +136,31 @@ function PublicMenu({ data, update }: PublicMenuProps) {
       </div>
 
       {/* Item Detail Modal */}
-      <ItemDetailModal
-        item={selectedItem}
-        currencySymbol={config.currencySymbol}
-        onClose={() => setSelectedItem(null)}
-      />
+      <Suspense fallback={MODAL_FALLBACK}>
+        <ItemDetailModal
+          item={selectedItem}
+          currencySymbol={config.currencySymbol}
+          onClose={handleCloseItem}
+        />
+      </Suspense>
 
       {/* Location & Hours Modal */}
-      <LocationModal
-        isOpen={isLocationOpen}
-        config={config}
-        onClose={() => setIsLocationOpen(false)}
-      />
+      <Suspense fallback={MODAL_FALLBACK}>
+        <LocationModal
+          isOpen={isLocationOpen}
+          config={config}
+          onClose={handleCloseLocation}
+        />
+      </Suspense>
 
       {/* Call Confirmation Modal */}
-      <CallModal
-        isOpen={isCallOpen}
-        config={config}
-        onClose={() => setIsCallOpen(false)}
-      />
+      <Suspense fallback={MODAL_FALLBACK}>
+        <CallModal
+          isOpen={isCallOpen}
+          config={config}
+          onClose={handleCloseCall}
+        />
+      </Suspense>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { memo, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Category } from '../types';
 import { useLanguage } from '../i18n';
@@ -9,7 +9,7 @@ interface CategoryTabsProps {
   onSelectCategory: (id: string) => void;
 }
 
-export const CategoryTabs: React.FC<CategoryTabsProps> = ({
+export const CategoryTabs: React.FC<CategoryTabsProps> = memo(({
   categories,
   activeCategoryId,
   onSelectCategory,
@@ -33,7 +33,7 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
   }, [activeCategoryId]);
 
   return (
-    <div className="w-full max-w-md mx-auto px-4 py-2 sticky top-[57px] z-20 bg-[#FAFAF8]/95 backdrop-blur-md">
+    <div className="w-full max-w-md mx-auto px-4 py-2 sticky top-[57px] z-20 bg-[#FAFAF8]/95 backdrop-blur-[8px]">
       <div
         ref={scrollContainerRef}
         className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth py-1 px-1 -mx-1"
@@ -98,4 +98,4 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
       </div>
     </div>
   );
-};
+});

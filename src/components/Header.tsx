@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { MapPin, Phone, Utensils } from 'lucide-react';
 import { RestaurantConfig } from '../types';
 import { useLanguage } from '../i18n';
+import { assetUrl } from '../lib/assetUrl';
 
 interface HeaderProps {
   config: RestaurantConfig;
@@ -9,20 +10,22 @@ interface HeaderProps {
   onOpenCall: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ config, onOpenLocation, onOpenCall }) => {
+export const Header: React.FC<HeaderProps> = memo(({ config, onOpenLocation, onOpenCall }) => {
   const { lang, t } = useLanguage();
 
   return (
-    <header className="sticky top-0 z-30 w-full bg-white/95 backdrop-blur-md border-b border-[#ECECEC] transition-all">
+    <header className="sticky top-0 z-30 w-full bg-white/95 backdrop-blur-[8px] border-b border-[#ECECEC] transition-all">
       <div className="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
         {/* Logo & Restaurant Name */}
         <div className="flex items-center gap-3">
           <div className="relative w-10 h-10 rounded-2xl overflow-hidden border border-[#ECECEC] bg-[#FAFAF8] flex items-center justify-center shrink-0 shadow-xs">
             {config.logo ? (
               <img
-                src={config.logo}
+                src={assetUrl(config.logo)}
                 alt={config.name[lang]}
                 className="w-full h-full object-cover"
+                loading="eager"
+                decoding="async"
                 onError={(e) => {
                   // Fallback icon if image fails
                   (e.target as HTMLElement).style.display = 'none';
@@ -66,4 +69,4 @@ export const Header: React.FC<HeaderProps> = ({ config, onOpenLocation, onOpenCa
       </div>
     </header>
   );
-};
+});

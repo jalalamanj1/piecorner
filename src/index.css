@@ -2,12 +2,24 @@
 
 @theme {
   --font-sans: "Cairo", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --color-cream: #fafaf8;
+  --color-ink: #222222;
+  --color-primary: #4caf50;
+  --color-accent: #ff8a30;
+  --color-line: #ececec;
+  --color-muted: #777777;
+  --color-soft: #f2f2ee;
 }
 
 html {
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overscroll-behavior-y: none;
 }
 
+/* Hide scrollbars globally while preserving scroll behaviour */
 ::-webkit-scrollbar {
   display: none;
 }
@@ -16,4 +28,35 @@ html,
 body {
   scrollbar-width: none;
   -ms-overflow-style: none;
+}
+
+body {
+  margin: 0;
+  background-color: #fafaf8;
+}
+
+/* No-scrollbar utility used by horizontal scrollers */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* GPU-friendly touch feedback */
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Respect users who prefer reduced motion: disable the optional transitions */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
