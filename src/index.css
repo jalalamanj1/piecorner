@@ -31,6 +31,12 @@
     user-select: none;
     -webkit-user-select: none;
   }
+
+  /* Allow text selection inside inputs/textarea/select (admin panel) */
+  input, textarea, select {
+    user-select: text;
+    -webkit-user-select: text;
+  }
 }
 
 /* Glassmorphism Classes */
@@ -48,7 +54,10 @@
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.3);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
 .glass-card:active, .glass-card:hover {

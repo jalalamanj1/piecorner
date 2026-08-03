@@ -14,9 +14,10 @@ export const Header: React.FC<HeaderProps> = ({ config }) => {
         <div className="flex items-center gap-2.5">
           <div className="w-10 h-10 rounded-full overflow-hidden border border-[#FFBA08]/40 shadow-md bg-black/40 shrink-0">
             <img
-              src={resolveImageUrl('icon.png')}
+              src={resolveImageUrl('icon-128.png')}
               alt={config.restaurantName}
               className="w-full h-full object-cover"
+              decoding="async"
             />
           </div>
           <div>

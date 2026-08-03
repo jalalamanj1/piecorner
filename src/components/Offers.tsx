@@ -1,7 +1,7 @@
 import React from 'react';
 import { BadgePercent, CheckCircle2, ChevronDown } from 'lucide-react';
 import { offers } from '../config';
-import { resolveImageUrl } from '../utils/image';
+import { SmartImage } from './SmartImage';
 
 interface OffersProps {
   isOpen: boolean;
@@ -46,15 +46,14 @@ export const Offers: React.FC<OffersProps> = ({ isOpen, onToggle }) => {
               >
                 {/* Offer Image (square) */}
                 <div className={`relative h-24 w-full overflow-hidden bg-gradient-to-br ${offer.accent} bg-opacity-20 border-b border-white/10 flex items-center justify-center`}>
-                  {offer.image ? (
-                    <img
-                      src={resolveImageUrl(offer.image)}
-                      alt={offer.titleAr}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  ) : (
-                    <span className="text-4xl drop-shadow-lg">{offer.icon}</span>
-                  )}
+                  <SmartImage
+                    src={offer.image}
+                    alt={offer.titleAr}
+                    emoji={offer.icon}
+                    wrapperClassName="w-full h-full"
+                    imgClassName="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    emojiClassName="text-4xl drop-shadow-lg"
+                  />
                 </div>
 
                 <div className="p-3 flex flex-col gap-2 flex-1">

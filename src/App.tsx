@@ -80,9 +80,11 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#181818] text-white selection:bg-[#E85D04] selection:text-white font-['Cairo',sans-serif] relative overflow-x-hidden">
       
-      {/* Global Ambient Lighting Orbs */}
-      <div className="fixed top-0 right-1/2 translate-x-1/2 w-[350px] h-[350px] bg-[#E85D04]/12 rounded-full blur-[140px] pointer-events-none" />
-      <div className="fixed bottom-1/3 left-0 w-[300px] h-[300px] bg-[#FFBA08]/8 rounded-full blur-[140px] pointer-events-none" />
+      {/* Global Ambient Lighting Orbs (radial gradients — GPU-cheap, no blur filter) */}
+      <div className="fixed top-[-120px] right-1/2 translate-x-1/2 w-[450px] h-[450px] pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(232,93,4,0.16) 0%, rgba(232,93,4,0.05) 45%, transparent 70%)' }} />
+      <div className="fixed bottom-1/3 left-[-120px] w-[380px] h-[380px] pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(255,186,8,0.10) 0%, rgba(255,186,8,0.03) 45%, transparent 70%)' }} />
 
       {/* Main Container - Mobile Centered Architecture */}
       <div className="w-full max-w-lg mx-auto relative z-10 space-y-2">

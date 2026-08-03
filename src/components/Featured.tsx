@@ -2,7 +2,7 @@ import React from 'react';
 import { MenuItem } from '../types';
 import { Flame, ChevronDown } from 'lucide-react';
 import { getItemEmoji } from '../utils/foodEmoji';
-import { resolveImageUrl } from '../utils/image';
+import { SmartImage } from './SmartImage';
 
 interface FeaturedProps {
   featuredItems: MenuItem[];
@@ -58,19 +58,14 @@ export const Featured: React.FC<FeaturedProps> = ({
                 >
                   {/* Card Image */}
                   <div className="relative h-28 w-full rounded-xl overflow-hidden mb-2.5 bg-black/40 border border-white/10">
-                    {item.image ? (
-                      <img
-                        src={resolveImageUrl(item.image)}
-                        alt={item.nameAr}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#E85D04]/25 to-[#FFBA08]/10">
-                        <span className="text-5xl drop-shadow-lg">
-                          {getItemEmoji(item.nameAr)}
-                        </span>
-                      </div>
-                    )}
+                    <SmartImage
+                      src={item.image}
+                      alt={item.nameAr}
+                      emoji={getItemEmoji(item.nameAr)}
+                      wrapperClassName="w-full h-full"
+                      imgClassName="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      emojiClassName="text-5xl drop-shadow-lg"
+                    />
                     {item.badge && (
                       <span className="absolute top-2 right-2 glass-pill px-2.5 py-0.5 rounded-full text-[10px] font-black text-[#FFBA08] border border-[#FFBA08]/40 shadow-md">
                         {item.badge}
