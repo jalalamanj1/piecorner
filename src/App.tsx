@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Featured } from './components/Featured';
 import { Offers } from './components/Offers';
 import { MenuSection } from './components/MenuSection';
-import { FloatingButtons } from './components/FloatingButtons';
 import { ConfigDrawer } from './components/ConfigDrawer';
 import { Header } from './components/Header';
 
@@ -113,10 +112,6 @@ export default function App() {
         />
 
       </div>
-
-      {/* FLOATING ACTION BUTTONS */}
-      <FloatingButtons config={config} />
-
     </div>
   );
 }

@@ -30,9 +30,6 @@ export const Featured: React.FC<FeaturedProps> = ({
             <h2 className="text-base font-black text-white group-hover:text-[#FFBA08] transition-colors">
               الأكثر طلبًا ⭐
             </h2>
-            <p className="text-[10px] text-white/60 font-medium">
-              أصناف مميزة يُنصح بتجربتها
-            </p>
           </div>
         </div>
 

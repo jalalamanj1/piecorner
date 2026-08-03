@@ -24,9 +24,6 @@ export const Offers: React.FC<OffersProps> = ({ isOpen, onToggle }) => {
             <h2 className="text-base font-black text-white group-hover:text-[#FFBA08] transition-colors">
               العروض 🎉
             </h2>
-            <p className="text-[10px] text-white/60 font-medium">
-              عروض خاصة لفترة محدودة
-            </p>
           </div>
         </div>
 

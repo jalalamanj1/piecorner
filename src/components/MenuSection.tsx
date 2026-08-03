@@ -80,9 +80,6 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
                   <h3 className="text-base font-black text-white group-hover:text-[#FFBA08] transition-colors flex items-center gap-2">
                     <span>{category.titleAr}</span>
                   </h3>
-                  <p className="text-[10px] text-white/60 font-medium">
-                    {category.descriptionAr}
-                  </p>
                 </div>
               </div>
 
